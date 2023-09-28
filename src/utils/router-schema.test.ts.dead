@@ -1,0 +1,92 @@
+// this is just a playground for schema creation based on typescript types.
+import { describe, test, expect } from "bun:test";
+import { property, objectOptions, getJSONSchema } from 'type-schema';
+import { StatusCode, FastifyError, Operation } from "./router-schema";
+
+describe("schema generation tests", () => {
+
+  test("basic", () => {
+
+    class PostBodySchema {
+      @property({ required: true })
+      username: string;
+
+      @property({ required: true })
+      password: string;
+    }
+
+    // AJV async schema
+    @objectOptions({ $async: true })
+    class PostSchema {
+      @property({ required: true })
+      body: PostBodySchema;
+    }
+
+    const schema = getJSONSchema(PostSchema);
+
+    const expected =
+    {
+      "$async": true,
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ]
+        }
+      },
+      "required": [
+        "body"
+      ]
+    };
+
+    expect(JSON.stringify(schema)).toEqual(JSON.stringify(expected));
+  });
+
+  test("router-types", () => {
+
+    const schema1 = getJSONSchema(FastifyError);
+
+    const expected1 =
+    {
+      type: "object",
+      properties: {
+        code: { type: "string" },
+        name: { type: "string" },
+        message: { type: "string" },
+        stack: { type: "string" },
+        statusCode: { type: "number" }
+      },
+      required: ["code", "name", "message"]
+    };
+
+    expect(JSON.stringify(schema1)).toEqual(JSON.stringify(expected1));
+
+    const schema2 = getJSONSchema(Operation);
+
+    const expected2 =
+    {
+      type: "object",
+      properties: {
+      }
+    };
+
+    expect(schema2).toEqual(expected2);
+
+
+
+  });
+
+  //test("enum types")
+
+});
