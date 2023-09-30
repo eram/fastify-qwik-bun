@@ -46,6 +46,8 @@ describe("Version testing", () => {
     ["10.7.8.1", "10.7.8.2", "lt"],
     ["10.7.8.10.1", "10.7.8.10.2", "lt"],
     ["10.7.8.11.1", "10.7.8.10.2", "gt"],
+    ["10.7.8.11.1.7", "10.7.8.11.1.6", "gt"],
+    ["10.7.8.11+pre.1.7", "10.7.8.11.1.7", "lt"],
 
     ["unspecified", "apply-by-entity", "gt"],
     ["master-rc-daily", "apply-by-entity", "gt"],
@@ -144,7 +146,7 @@ describe("Version testing", () => {
 
   test("compare list", () => {
     cases.forEach((c, _i, _a) => {
-      console.log(_i, c);
+      //console.log(_i, c);
       const v0 = new Version(c[0]);
       expect(v0[c[2]](c[1])).toBeTrue();
     });

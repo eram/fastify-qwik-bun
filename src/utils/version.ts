@@ -58,8 +58,12 @@ export class Version {
           && (_gt(this.minor, o.minor) || _eq(this.minor, o.minor)
             && (_gt(this.patch, o.patch) || _eq(this.patch, o.patch)
               && (_gt(this.build, o.build) || _eq(this.build, o.build)
-                && ((this.preRelease && o.preRelease) && _gt(this.preRelease, o.preRelease) ||
-                  (!this.preRelease && o.preRelease)
+                && (_gt(this._parts[5], o._parts[5]) || _eq(this._parts[5], o._parts[5])
+                  && (_gt(this._parts[6], o._parts[6]) || _eq(this._parts[6], o._parts[6])
+                    && ((this.preRelease && o.preRelease) && _gt(this.preRelease, o.preRelease) ||
+                      (!this.preRelease && o.preRelease)
+                    )
+                  )
                 )
               )
             )
