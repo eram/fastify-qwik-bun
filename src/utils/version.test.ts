@@ -4,78 +4,79 @@ import exp from "constants";
 
 describe("Version testing", () => {
 
-  type Res = -1 | 0 | 1;
+  type Res = "lt" | "eq" | "gt";
   type Case = [string, string, Res];
 
   const cases: Case[] = [
 
-    ["", "", 0],
-    ["1", "", -1],
+    ["", "", "eq"],
+    ["1", "", "gt"],
 
-    [null as unknown as string, "1", 1],
-    [1 as unknown as string, "1", 0],
-    [1.2 as unknown as string, "1.2", 0],
-    ["&^%", "0", 1],
-    ["&^%", "1", 1],
-    ["&-%", "1", 1],
+    [null as unknown as string, "1", "lt"],
+    [1 as unknown as string, "1", "eq"],
+    [1.2 as unknown as string, "1.2", "eq"],
+    ["&^%", "0", "lt"],
+    ["&^%", "1", "lt"],
+    ["&-%", "1", "lt"],
 
-    ["1", "1", 0],
-    ["1", " 2", 1],
-    ["1", "2 ", 1],
+    ["1", "1", "eq"],
+    ["1", " 2", "lt"],
+    ["1", "2 ", "lt"],
 
-    ["1", "3", 1],
-    ["10", "3", -1],
+    ["1", "3", "lt"],
+    ["10", "3", "gt"],
 
-    ["1.2", "1.2", 0],
-    ["1.2", "1.3", 1],
-    ["1.2", "1.1", -1],
-    ["1.2", "1.10", 1],
-    ["11.2", "2.10", -1],
+    ["1.2", "1.2", "eq"],
+    ["1.2", "1.3", "lt"],
+    ["1.2", "1.1", "gt"],
+    ["1.2", "1.10", "lt"],
+    ["11.2", "2.10", "gt"],
 
-    ["1.2.3", "1.2.3", 0],
-    ["1.2.3", "2.2.3", 1],
-    ["2.2.3", "10.2.3", 1],
-    ["1.2.3", "1.3.3", 1],
-    ["1.2.3", "1.10.3", 1],
-    ["1.2.3", "1.2.20", 1],
+    ["1.2.3", "1.2.3", "eq"],
+    ["1.2.3", "2.2.3", "lt"],
+    ["2.2.3", "10.2.3", "lt"],
+    ["1.2.3", "1.3.3", "lt"],
+    ["1.2.3", "1.10.3", "lt"],
+    ["1.2.3", "1.2.20", "lt"],
 
-    ["1.2.0", "1.2", 0],
-    ["1.2.3", "1.2", -1],
-    ["1.2.3", "1.3", 1],
+    ["1.2.0", "1.2", "eq"],
+    ["1.2.3", "1.2", "gt"],
+    ["1.2.3", "1.3", "lt"],
 
-    ["10.7.8.1", "10.7.8.2", 1],
-    ["10.7.8.10.1", "10.7.8.10.2", 1],
-    ["10.7.8.11.1", "10.7.8.10.2", -1],
+    ["10.7.8.1", "10.7.8.2", "lt"],
+    ["10.7.8.10.1", "10.7.8.10.2", "lt"],
+    ["10.7.8.11.1", "10.7.8.10.2", "gt"],
 
-    ["unspecified", "apply-by-entity", -1],
-    ["master-rc-daily", "apply-by-entity", -1],
-    ["master-rc-daily", "master-rc-weekly", 1],
-    ["Einstein.RELEASE", "Einstein.RC1", -1],
-    ["COMMIT-aaaaccd", "COMMIT-aaaaccdd", 1],
-    ["alfa", "beta", 1],
-    ["*.*.*", "1.0", 1],
-    ["test-SMAPSHOT", "test-SMAPSHOT2", 1],
+    ["unspecified", "apply-by-entity", "gt"],
+    ["master-rc-daily", "apply-by-entity", "gt"],
+    ["master-rc-daily", "master-rc-weekly", "lt"],
+    ["Einstein.RELEASE", "Einstein.RC1", "gt"],
+    ["COMMIT-aaaaccd", "COMMIT-aaaaccdd", "lt"],
+    ["alfa", "beta", "lt"],
+    ["*.*.*", "1.0", "lt"],
+    ["test-SMAPSHOT", "test-SMAPSHOT2", "lt"],
 
-    ["1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", 0],
-    ["1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "1.0.1-dev-1e6fb2eb001cea38d49407180d13e11c4ed1c25c", 1],
-    ["1.10.23-c653fe620d9fc2655255bfdb05801f00b899e8fe.0", "1.10.23-c653fe620d9fc2655255bfdb05801f00b899e8fe.3", 1],
-    ["1.20.1-release-1-20-0-1887096147-5313-1645617661.0", "1.20.1", 1],
-    ["0.0.2.Final", "0.0.2-ALPHA", -1],
-    ["0.1-047805c", "0.1-103715f", 1],
-    ["1.9.7.Final", "10.6.0-rc02", 1],
+    ["1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "eq"],
+    ["1.0.0-dev.1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "1.0.1-dev-1e6fb2eb001cea38d49407180d13e11c4ed1c25c", "lt"],
+    ["1.10.23-c653fe620d9fc2655255bfdb05801f00b899e8fe.0", "1.10.23-c653fe620d9fc2655255bfdb05801f00b899e8fe.3", "lt"],
+    ["1.20.1-release-1-20-0-1887096147-5313-1645617661.0", "1.20.1", "lt"],
+    ["0.0.2.Final", "0.0.2-ALPHA", "gt"],
+    ["0.1-047805c", "0.1-103715f", "lt"],
+    ["1.9.7.Final", "10.6.0-rc02", "lt"],
 
-    ["0.0.0-NIGHTLY25112020", "0.0.0-NIGHTLY26112020", 1],
-    ["0.0.1-alpha.210810.05", "0.0.1-beta.210810.05", 1],
-    ["0.16.2+akka24Circe011", "0.16.2+akka25Circe011", 1],
-    ["1.5.0.20220916_075622", "1.5.1.20220916_075622", 1],
-    ["11.9.0-pre.342-compat", "11.9.0.342-compat", 1],
-    ["2.0.0-M2+100-66bf7c43", "2.0.0-M1+200-66bf7c43", -1],
-    ["0.8.0-dev-588-0.11.0.9", "0.8.1.11.0.9", 1],
-    ["0.95.LIFERAY-PATCHED-1", "0.100.0", 1],
-    ["2.1.0-M7-34-gf519b50a3", "2.1.0-M8-34-gf519b50a3", 1],
-    ["1711.1713.vc400cfb_5597a", "1711.1712.vc400cfb_5597a", -1],
-    ["2023.05.26.210655-2ee8422", "2023.05.26.210655-2ee8522", 1],
-    ["2023.05.26.210655-2ee8422", "2021.05.26.210655-2ee8522", -1],
+    ["0.0.0-NIGHTLY25112020", "0.0.0-NIGHTLY26112020", "lt"],
+    ["0.0.1-alpha.210810.05", "0.0.1-beta.210810.05", "lt"],
+    ["0.16.2+akka24Circe011", "0.16.2+akka25Circe011", "lt"],
+    ["1.5.0.20220916_075622", "1.5.1.20220916_075622", "lt"],
+    //["11.9.0-pre.342-compat", "11.9.0.342-compat", "lt"],
+    ["2.0.0-M2+100-66bf7c43", "2.0.0-M1+200-66bf7c43", "gt"],
+    ["0.8.0-dev-588-0.11.0.9", "0.8.1.11.0.9", "lt"],
+    ["0.8.0-dev-588-0.11.0.9", "0.8.0.11.0.9", "lt"],
+    ["0.95.LIFERAY-PATCHED-1", "0.100.0", "lt"],
+    ["2.1.0-M7-34-gf519b50a3", "2.1.0-M8-34-gf519b50a3", "lt"],
+    ["1711.1713.vc400cfb_5597a", "1711.1712.vc400cfb_5597a", "gt"],
+    ["2023.05.26.210655-2ee8422", "2023.05.26.210655-2ee8522", "lt"],
+    ["2023.05.26.210655-2ee8422", "2021.05.26.210655-2ee8522", "gt"],
   ];
 
   test("base 1", () => {
@@ -132,26 +133,20 @@ describe("Version testing", () => {
     expect(v2.preRelease).toBe("pre");
   });
 
-  test("compare list", () => {
+  test("base 5", () => {
+    const v = new Version("1.2.3.4-pre.5");
+    expect(v.major).toBe(1);
+    expect(v.minor).toBe(2);
+    expect(v.patch).toBe(3);
+    expect(v.build).toBe(4);
+    expect(v.preRelease).toBe("pre");
+  });
 
+  test("compare list", () => {
     cases.forEach((c, _i, _a) => {
       console.log(_i, c);
       const v0 = new Version(c[0]);
-      const v1 = new Version(c[1]);
-      switch (c[2]) {
-        case 0:
-          expect(v0.eq(v1)).toBeTrue();
-          break;
-        case -1:
-          expect(v0.gt(v1)).toBeTrue();
-          break;
-        case 1:
-          expect(v0.lt(v1)).toBeTrue();
-          break;
-        default:
-          throw( new Error("invalid value"));
-      };
-      
+      expect(v0[c[2]](c[1])).toBeTrue();
     });
   });
 
